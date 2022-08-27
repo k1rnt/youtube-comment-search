@@ -2,14 +2,17 @@ package main
 
 import (
 	"flag"
+	"fmt"
 
 	"github.com/joho/godotenv"
 	"github.com/k1rnt/youtube-comment-search/pkg/api"
+	"github.com/k1rnt/youtube-comment-search/pkg/search"
 )
 
 var (
 	videoId    = flag.String("video_id", "UKZt1vq8bKI", "video id")
 	maxResults = flag.Int("max_results", 100, "max comments")
+	keyword    = flag.String("keyword", "", "keyword")
 )
 
 func init() {
@@ -31,7 +34,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	for _, comment := range comments {
-		println(comment)
+	for i, comment := range search.Keyword(comments, *keyword) {
+		fmt.Printf("%d: %s\n", i, comment)
 	}
 }
