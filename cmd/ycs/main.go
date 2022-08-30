@@ -13,6 +13,7 @@ var (
 	videoId    = flag.String("video_id", "UKZt1vq8bKI", "video id")
 	maxResults = flag.Int("max_results", 100, "max comments")
 	keyword    = flag.String("keyword", "", "keyword")
+	regex      = flag.String("regex", "", "regex")
 )
 
 func init() {
@@ -34,7 +35,14 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	for i, comment := range search.Keyword(comments, *keyword) {
+	var res []string
+	for _, comment := range search.Keyword(comments, *keyword) {
+		res = append(res, comment)
+	}
+	for _, comment := range search.Regex(res, *regex) {
+		res = append(res, comment)
+	}
+	for i, comment := range res {
 		fmt.Printf("%d: %s\n", i, comment)
 	}
 }
